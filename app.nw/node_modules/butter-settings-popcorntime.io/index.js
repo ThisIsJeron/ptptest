@@ -16,15 +16,15 @@ module.exports = {
          movie: {
              order: 1,
              name: 'Movies',
-             uri: ['MovieApi?'
+             uri: ['yts?'
                    +'&apiURL='
-                     + 'https://movies-v2.api-fetch.website/,'
-                     + 'cloudflare+https://movies-v2.api-fetch.website,'
+                     + 'https://yts.am/,'
+                     + 'cloudflare+https://yts.am/,'
 //                     + 'cloudflare+http://xor.image.yt'
                   ]
          },
          tvshow: {
-             order: 2,
+             order: 3,
              name: 'Series',
              uri: ['TVApi?'
                    +'&apiURL='
@@ -34,7 +34,7 @@ module.exports = {
                   ]
          },
        anime: {
-             order: 3,
+             order: 4,
              name: 'Anime',
              uri: ['AnimeApi?'
                    +'&apiURL='
@@ -44,9 +44,14 @@ module.exports = {
                   ]
          },
          indie: {
-             order: 4,
-             name: 'Indie',
-             uri: ['vodo']
+             order: 2,
+             name: 'Movies ',
+             uri: ['MovieApi?'
+                   +'&apiURL='
+                     + 'https://movies-v2.api-fetch.website/,'
+                     + 'cloudflare+https://movies-v2.api-fetch.website/,'
+//                     + 'cloudflare+http://xor.image.yt'
+                  ]
          },
 
          subtitle: 'OpenSubtitles',

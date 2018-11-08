@@ -1,0 +1,48 @@
+{
+  "name": "butter-provider-yts",
+  "version": "0.1.0",
+  "description": "A Assistir em HD provider for YTS",
+  "main": "index.js",
+  "butter": {
+    "testArgs": "yts?&apiURL=http://62.210.81.37/,dnstxt://_movies.api-fetch.website/"
+  },
+  "scripts": {
+    "test": "tape ./node_modules/butter-test-provider/tests/*"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/assistiremhd/butter-provider-yts.git"
+  },
+  "keywords": [
+    "yts",
+    "butter",
+    "streaming"
+  ],
+  "author": {
+    "name": "Random Hacker"
+  },
+  "license": "GPL-3.0",
+  "bugs": {
+    "url": "https://github.com/assistiremhd/butter-provider-yts/issues"
+  },
+  "homepage": "https://github.com/assistiremhd/butter-provider-yts#readme",
+  "dependencies": {
+    "butter-provider": "^0.2.0",
+    "butter-sanitize": "^0.1.0",
+    "lodash": "^4.0.0",
+    "popcorn-txt-api": "0.0.5",
+    "q": "^1.4.1",
+    "request": "^2.67.0",
+    "sanitizer": "^0.1.3"
+  },
+  "devDependencies": {
+    "butter-test-provider": "*"
+  },
+  "gitHead": "8a7c254e7534fe00feb2dbfcb354cc65662830b4",
+  "readme": "This is a [[https://github.com/butterproject][Butter]] provider to access content from a YTS service, if you want\nto find more info on Butter Providers check the [[https://github.com/butterproject/butter-provider][Butter Provider Docs]].\n",
+  "readmeFilename": "README.org",
+  "_id": "butter-provider-yts@0.1.0",
+  "_shasum": "6bd83cc6da39fd8ab6a15de4dd858beb8c5b3bcf",
+  "_from": "git+https://github.com/team-pct/butter-provider-yts.git",
+  "_resolved": "git+https://github.com/team-pct/butter-provider-yts.git#8a7c254e7534fe00feb2dbfcb354cc65662830b4"
+}
