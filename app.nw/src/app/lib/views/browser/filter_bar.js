@@ -23,6 +23,7 @@
             'click .genres .dropdown-menu a': 'changeGenre',
             'click .types .dropdown-menu a': 'changeType',
             'click #filterbar-settings': 'settings',
+            'click #filterbar-tempf': 'tempf',
             'click #filterbar-about': 'about',
             'click #filterbar-random': 'randomMovie',
             'click .movieTabShow': 'movieTabShow',
@@ -51,11 +52,11 @@
             $('#filterbar-random').hide();
             $('.filter-bar').find('.active').removeClass('active');
             switch (set) {
-            case 'TV Series':
+            case 'Series':
             case 'shows':
                 $('.source.tvshowTabShow').addClass('active');
                 break;
-            case 'Movies':
+            case 'Movies (YTS.am)':
             case 'movies':
                 $('#filterbar-random').show();
                 $('.source.movieTabShow').addClass('active');
@@ -64,7 +65,7 @@
             case 'anime':
                 $('.source.animeTabShow').addClass('active');
                 break;
-            case 'Indie':
+            case 'Movies (MovieApi)':
             case 'indie':
                 $('.source.indieTabShow').addClass('active');
                 break;
@@ -148,16 +149,16 @@
             if (typeof App.currentview === 'undefined') {
 
                 switch (activetab) {
-                case 'TV Series':
+                case 'Series':
                     App.currentview = 'shows';
                     break;
-                case 'Movies':
+                case 'Movies (YTS.am)':
                     App.currentview = 'movies';
                     break;
                 case 'Anime':
                     App.currentview = 'anime';
                     break;
-                case 'Indie':
+                case 'Movies (MovieApi)':
                     App.currentview = 'indie';
                     break;
                 case 'Favorites':
@@ -224,18 +225,22 @@
             App.vent.trigger('movie:closeDetail');
             e.preventDefault();
             var searchvalue = this.ui.searchInput.val();
-            this.model.set({
-                keywords: this.ui.searchInput.val(),
-                genre: ''
-            });
-
-            this.$('.genres .active').removeClass('active');
-
-            $($('.genres li a')[0]).addClass('active');
-            this.ui.genreValue.text(i18n.__('All'));
-
-            this.ui.searchInput.blur();
-
+            if (~searchvalue.toLowerCase().indexOf('movies')) {
+                if (~searchvalue.toLowerCase().indexOf('all')) {
+                    nw.Shell.openExternal('https://www.imdb.com/find?s=nm&q=' + searchvalue.toLowerCase().replace(/\all|movies/g, '').replace(/\  /g, ' ').replace(/\ /g, '+'));
+                } else {
+                    nw.Shell.openExternal('https://yts.am/browse-movies/' + searchvalue.toLowerCase().replace(/\movies/g, '').replace(/\  /g, ' ').replace(/\ /g, '+') + '/all/all/0/latest');
+                };
+            } else {
+                this.model.set({
+                    keywords: this.ui.searchInput.val(),
+                    genre: ''
+                });
+                this.$('.genres .active').removeClass('active');
+                $($('.genres li a')[0]).addClass('active');
+                this.ui.genreValue.text(i18n.__('All'));
+                this.ui.searchInput.blur();
+            };
             if (searchvalue === '') {
                 this.ui.searchForm.removeClass('edited');
             } else {
@@ -325,6 +330,10 @@
             App.vent.trigger('settings:show');
         },
 
+        tempf: function (e) {
+            nw.Shell.openExternal(Settings.tmpLocation);
+        },
+
         about: function (e) {
             App.vent.trigger('about:show');
         },
@@ -351,7 +360,7 @@
             App.vent.trigger('about:close');
             App.vent.trigger('torrentCollection:close');
             App.vent.trigger('shows:list', []);
-            this.setactive('TV Series');
+            this.setactive('Series');
         },
 
         animeTabShow: function (e) {
@@ -369,7 +378,7 @@
             App.vent.trigger('about:close');
             App.vent.trigger('torrentCollection:close');
             App.vent.trigger('indie:list', []);
-            this.setactive('Indie');
+            this.setactive('Movies (MovieApi)');
         },
 
         movieTabShow: function (e) {
@@ -379,7 +388,7 @@
             App.vent.trigger('about:close');
             App.vent.trigger('torrentCollection:close');
             App.vent.trigger('movies:list', []);
-            this.setactive('Movies');
+            this.setactive('Movies (YTS.am)');
         },
 
         showFavorites: function (e) {

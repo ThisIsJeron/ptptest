@@ -1,4 +1,4 @@
-(function (App) {
+﻿(function (App) {
     'use strict';
 
     var prevX = 0;
@@ -196,6 +196,31 @@
 
             this.ui.coverImage.remove();
 
+            if (this.model.get('type') == 'movie') {
+                if ((this.model.get('cover') == null) || (this.model.get('cover') == 'images/posterholder.png')) {
+                    var imdb = this.model.get('imdb_id');
+                    var api_key = Settings.tmdb.api_key;
+                    var movie = function () {
+                        var tmp = null;
+                        $.ajax({
+                            url: 'http://api.themoviedb.org/3/movie/'+ imdb +'?api_key='+ api_key +'&language=en' + '&append_to_response=videos',
+                            type: 'get',
+                            dataType: 'json',
+                            async: false,
+                            global: false,
+                            success: function (data) {
+                                tmp = data;
+                            }
+                        });
+                        return tmp;
+                    }();
+                    if (movie) {
+                        if (movie.poster_path) {
+                            coverUrl = 'http://image.tmdb.org/t/p/w500' + movie.poster_path;
+                        }
+                    }
+                }
+            };
         },
 
         showDetail: function (e) {
@@ -219,6 +244,7 @@
                     subtitle: this.model.get('subtitle'),
                     backdrop: this.model.get('backdrop'),
                     rating: this.model.get('rating'),
+                    certification: this.model.get('certification'),
                     trailer: this.model.get('trailer'),
                     provider: this.model.get('provider'),
                     watched: this.model.get('watched'),
@@ -358,6 +384,7 @@
                                     subtitle: data.subtitle,
                                     backdrop: undefined,
                                     rating: data.rating,
+                                    certification: data.certification,
                                     trailer: false,
                                     provider: that.model.get('provider'),
                                 };
@@ -389,6 +416,7 @@
                             subtitle: this.model.get('subtitle'),
                             backdrop: this.model.get('backdrop'),
                             rating: this.model.get('rating'),
+                            certification: this.model.get('certification'),
                             trailer: this.model.get('trailer'),
                             provider: this.model.get('provider'),
                         };

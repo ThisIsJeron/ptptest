@@ -1,5 +1,5 @@
 <div id="watch-now" class="left startStreaming" data-torrent="" data-episodeid="" data-episode="" data-season=""><%=i18n.__("Watch Now") %></div>
-<div class="dropdown-toggle left playerchoice" data-toggle="dropdown">
+<div id="watch-now2" class="dropdown-toggle left playerchoice" data-toggle="dropdown">
   <img class="imgplayerchoice" src="images/icons/local-icon.png"/>
   <span class="caret"></span>
 </div>

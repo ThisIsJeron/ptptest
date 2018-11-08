@@ -24,6 +24,7 @@
             'click .verifmetaFALSE': 'wrongMetadata',
             'click .vjs-subtitles-button': 'toggleSubtitles',
             'click .vjs-text-track': 'moveSubtitles',
+            'mousedown .eye-info-player': 'filenametoclip',
             'click .vjs-play-control': 'togglePlay'
         },
 
@@ -236,6 +237,17 @@
 
                 this._AutoPlayCheckTimer = setInterval(this.checkAutoPlay, 10 * 100 * 1); // every 1 sec
             }
+        },
+
+        filenametoclip: function (e) {
+            var clipboard = nw.Clipboard.get();
+            if (e.button === 0) {
+                clipboard.set(this.model.get('filename'), 'text');
+                $('.notification_alert').text(i18n.__('The filename was copied to the clipboard')).fadeIn('fast').delay(2500).fadeOut('fast');
+            } else if (e.button === 2) {
+                clipboard.set(this.model.get('src').replace('127.0.0.1', Settings.ipAddress), 'text');
+                $('.notification_alert').text(i18n.__('The stream url was copied to the clipboard')).fadeIn('fast').delay(2500).fadeOut('fast');
+            };
         },
 
         onPlayerReady: function () {
@@ -715,7 +727,7 @@
 
             Mousetrap.bind(['u', 'U'], function (e) {
                 that.displayStreamURL();
-            }, 'keydown');
+            }, 'keydown');;
 
             Mousetrap.bind('j', function (e) {
                 that.adjustPlaybackRate(-0.1, true);

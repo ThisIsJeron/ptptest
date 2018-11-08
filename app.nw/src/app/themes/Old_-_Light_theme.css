@@ -2892,7 +2892,7 @@ body,
   opacity: 0;
   background-position-x: 50%;
   background-position-y: -33px;
-  -webkit-filter: blur(5px);
+  -webkit-filter: blur(15px) brightness(0.7);
   background-repeat: no-repeat;
   -webkit-background-size: cover;
   background-size: cover;
@@ -3672,7 +3672,7 @@ body,
   -webkit-background-size: cover;
   background-size: cover;
   background-position: 0% 4%;
-  -webkit-filter: blur(20px) brightness(0.7);
+  -webkit-filter: blur(60px) brightness(0.7);
   background-color: #f8f8f8;
   opacity: 0;
 }
@@ -6376,7 +6376,7 @@ body,
   background-position-y: 0px;
   -webkit-background-size: cover;
   background-size: cover;
-  -webkit-filter: blur(5px);
+  -webkit-filter: blur(15px) brightness(0.7);
 }
 .loading .loading-background-overlay {
   width: 100%;

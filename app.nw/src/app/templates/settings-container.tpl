@@ -66,11 +66,38 @@
                 <div class="dropdown start-screen">
                     <p><%= i18n.__("Start Screen") %></p>
                         <%
-                            var arr_screens = ["Movies","TV Series","Anime","Indie","Favorites", "Watchlist", "Last Open"];
+                            if (Settings.moviesTabDisable === true) {
+                                var moviesy = "";
+                            } else {
+                                var moviesy = "Movies (YTS.am)";
+                            };
+                            if (Settings.indieTabDisable === true) {
+                                var moviesm = "";
+                            } else {
+                                var moviesm = "Movies (MovieApi)";
+                            };
+                            if (Settings.seriesTabDisable === true) {
+                                var seriess = "";
+                            } else {
+                                var seriess = "Series";
+                            };
+                            if (Settings.animeTabDisable === true) {
+                                var animee = "";
+                            } else {
+                                var animee = "Anime";
+                            };
+                            if (Settings.activateWatchlist === true) {
+                                var watchlistt = "Watchlist";
+                            } else {
+                                var watchlistt = "";
+                            };
+                            var arr_screens = [moviesy,moviesm,seriess,animee,"Favorites",watchlistt,"Last Open"];
 
                             var selct_start_screen = "";
                             for(var key in arr_screens) {
+                            if (arr_screens[key] !== "") {
                                 selct_start_screen += "<option "+(Settings.start_screen == arr_screens[key]? "selected='selected'":"")+" value='"+arr_screens[key]+"'>"+i18n.__(arr_screens[key])+"</option>";
+                            }
                             }
                         %>
                     <select name="start_screen"><%=selct_start_screen%></select>
@@ -79,27 +106,30 @@
             </span>
 
             <span class="advanced">
+                <input class="settings-checkbox" name="moviesTabDisable" id="moviesTabDisable" type="checkbox" <%=(Settings.moviesTabDisable? "checked='checked'":"")%>>
+                <label class="settings-label" for="moviesTabDisable"><%= i18n.__("Disable Movies Tab (YTS.am)") %></label>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                <input class="settings-checkbox" name="indieTabDisable" id="indieTabDisable" type="checkbox" <%=(Settings.indieTabDisable? "checked='checked'":"")%>>
+                <label class="settings-label" for="indieTabDisable"><%= i18n.__("Disable Movies Tab (MovieApi)") %></label>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                <input class="settings-checkbox" name="seriesTabDisable" id="seriesTabDisable" type="checkbox" <%=(Settings.seriesTabDisable? "checked='checked'":"")%>>
+                <label class="settings-label" for="seriesTabDisable"><%= i18n.__("Disable Series Tab") %></label>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                <input class="settings-checkbox" name="animeTabDisable" id="animeTabDisable" type="checkbox" <%=(Settings.animeTabDisable? "checked='checked'":"")%>>
+                <label class="settings-label" for="animeTabDisable"><%= i18n.__("Disable Anime Tab") %></label>
+            </span>
+            <span class="advanced">
                 <input class="settings-checkbox" name="translateSynopsis" id="translateSynopsis" type="checkbox" <%=(Settings.translateSynopsis? "checked='checked'":"")%>>
                 <label class="settings-label" for="translateSynopsis"><%= i18n.__("Translate Synopsis") %></label>
             </span>
             <span class="advanced">
                 <input class="settings-checkbox" name="coversShowRating" id="cb3" type="checkbox" <%=(Settings.coversShowRating? "checked='checked'":"")%>>
-                <label class="settings-label" for="cb3"><%= i18n.__("Show rating over covers") %></label>
+                <label class="settings-label" for="cb3"><%= i18n.__("Show Rating over covers") %></label>
             </span>
             <span class="advanced">
                 <input class="settings-checkbox" name="alwaysOnTop" id="cb4" type="checkbox" <%=(Settings.alwaysOnTop? "checked='checked'":"")%>>
                 <label class="settings-label" for="cb4"><%= i18n.__("Always On Top") %></label>
             </span>
-
-            <span class="advanced">
-                <input class="settings-checkbox" name="animeTabDisable" id="animeTabDisable" type="checkbox" <%=(Settings.animeTabDisable ? "checked='checked'":"")%>>
-                <label class="settings-label" for="animeTabDisable"><%= i18n.__("Disable Anime Tab") %></label>
-            </span>
-            <span class="advanced">
-                <input class="settings-checkbox" name="indieTabDisable" id="indieTabDisable" type="checkbox" <%=(Settings.indieTabDisable ? "checked='checked'":"")%>>
-                <label class="settings-label" for="indieTabDisable"><%= i18n.__("Disable Indie Tab") %></label>
-            </span>
-
             <span class="advanced">
                 <input class="settings-checkbox" name="rememberFilters" id="cb7" type="checkbox" <%=(Settings.rememberFilters? "checked='checked'":"")%>>
                 <label class="settings-label" for="cb7"><%= i18n.__("Remember Filters") %></label>
@@ -277,7 +307,7 @@
         <div class="content">
             <span>
                 <div class="dropdown movies-quality">
-                    <p><%= i18n.__("Only list movies in") %></p>
+                    <p><%= i18n.__("Only list Movies in") %></p>
                     <select name="movies_quality">
                         <option <%=(Settings.movies_quality == "all"? "selected='selected'":"") %> value="all"><%= i18n.__("All") %></option>
                         <option <%=(Settings.movies_quality == "1080p"? "selected='selected'":"") %> value="1080p">1080p</option>
@@ -288,7 +318,7 @@
             </span>
             <span>
                 <input class="settings-checkbox" name="moviesShowQuality" id="cb1" type="checkbox" <%=(Settings.moviesShowQuality? "checked='checked'":"")%>>
-                <label class="settings-label" for="cb1"><%= i18n.__("Show movie quality on list") %></label>
+                <label class="settings-label" for="cb1"><%= i18n.__("Show Movie quality on list") %></label>
             </span>
         </div>
     </section>
@@ -302,6 +332,10 @@
             <span>
                 <input class="settings-checkbox" name="playNextEpisodeAuto" id="playNextEpisodeAuto" type="checkbox" <%=(Settings.playNextEpisodeAuto? "checked='checked'":"")%>>
                 <label class="settings-label" for="playNextEpisodeAuto"><%= i18n.__("Play next episode automatically") %></label>
+            </span>
+            <span class="advanced">
+                <input class="settings-checkbox" name="activateLoCtrl" id="activateLoCtrl" type="checkbox" <%=(Settings.activateLoCtrl? "checked='checked'":"")%>>
+                <label class="settings-label" for="activateLoCtrl"><%= i18n.__("Show controls in Downloading Screen") %></label>
             </span>
 
         </div>
@@ -338,7 +372,7 @@
                     <span>
                         <div class="btn-settings syncTrakt" id="authTrakt">
                             <i class="fa fa-user-plus">&nbsp;&nbsp;</i>
-                            <%= i18n.__("Connect To %s", "Trakt") %>
+                            <%= i18n.__("Connect to %s", "Trakt") %>
                         </div>
                         <div id="authTraktCode" style="display:none">
                             <%= i18n.__("Code:")%>
@@ -365,7 +399,7 @@
                     <span>
                         <div class="btn-settings" id="connect-with-tvst">
                             <i class="fa fa-user-plus">&nbsp;&nbsp;</i>
-                            <%= i18n.__("Connect To %s", "TVShow Time") %>
+                            <%= i18n.__("Connect to %s", "TVShow Time") %>
                         </div>
                         <div class="tvst-loading-spinner" style="display: none"></div>
                     </span>
@@ -399,7 +433,7 @@
                     <span>
                         <div class="btn-settings" id="authOpensubtitles">
                             <i class="fa fa-user-plus">&nbsp;&nbsp;</i>
-                            <%= i18n.__("Connect To %s", "OpenSubtitles") %>
+                            <%= i18n.__("Connect to %s", "OpenSubtitles") %>
                         </div>
                     </span>
 					<span>
@@ -428,6 +462,24 @@
             <span>
                 <input class="settings-checkbox" name="activateRandomize" id="activateRandomize" type="checkbox" <%=(Settings.activateRandomize? "checked='checked'":"")%>>
                 <label class="settings-label" for="activateRandomize"><%= i18n.__("Randomize Button for Movies") %></label>
+            </span>
+            <span>
+                <p><%= i18n.__("Temporary Folder Button") %></p>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                <input class="settings-checkbox" name="activateTempf" id="activateTempf" type="checkbox" <%=(Settings.activateTempf? "checked='checked'":"")%>>
+                <label class="settings-label" for="activateTempf"><%= i18n.__("Filter Bar") %></label>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                <input class="settings-checkbox" name="activateTempfl" id="activateTempfl" type="checkbox" <%=(Settings.activateTempfl? "checked='checked'":"")%>>
+                <label class="settings-label" for="activateTempfl"><%= i18n.__("Downloading Screen") %></label>
+            </span>
+            <span>
+                <p><%= i18n.__("Movie Title (Downloading Screen) / Eye Icon (internal Player) Tooltip") %></p>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                <input class="settings-checkbox" name="activateToolf" id="activateToolf" type="checkbox" <%=(Settings.activateToolf? "checked='checked'":"")%>>
+                <label class="settings-label" for="activateToolf"><%= i18n.__("Filename") %></label>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                <input class="settings-checkbox" name="activateTools" id="activateTools" type="checkbox" <%=(Settings.activateTools? "checked='checked'":"")%>>
+                <label class="settings-label" for="activateTools"><%= i18n.__("Stream url") %></label>
             </span>
         </div>
     </section>
@@ -512,7 +564,7 @@
             </span>
             <span>
                 <input class="settings-checkbox" name="deleteTmpOnClose" id="cb2" type="checkbox" <%=(Settings.deleteTmpOnClose? "checked='checked'":"")%>>
-                <label class="settings-label" for="cb2"><%= i18n.__("Clear Tmp Folder after closing app?") %></label>
+                <label class="settings-label" for="cb2"><%= i18n.__("Clear Temporary Folder after closing app?") %></label>
             </span>
         </div>
     </section>
@@ -543,7 +595,7 @@
         <div class="content">
             <span >
                 <div class="dropdown tv_detail_jump_to">
-                    <p><%= i18n.__("When Opening TV Series Detail Jump To") %></p>
+                    <p><%= i18n.__("When opening TV Series Detail jump to") %></p>
                         <%
                             var tv_detail_jump_to = {
                                 "firstUnwatched": "First Unwatched Episode",

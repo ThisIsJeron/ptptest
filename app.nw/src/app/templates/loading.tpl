@@ -1,9 +1,12 @@
 <div class="loading">
+    <div class="fa fa-angle-down minimize-icon tooltipped" data-toggle="tooltip" data-placement="bottom" title="<%= i18n.__("Minimize") %>"></div>
+    <div class="maximize-icon" style="visibility:hidden"><span class="buffer_percent" style="font-size:12px;vertical-align:top;"></span> <i class="fa fa-play" style="font-size:12px;vertical-align:middle;"></i> <span class="title" style="font-size:12px;vertical-align:top;"></span> <span style="font-size:12px;vertical-align:top;">@ </span><span class="download_speed value" style="font-size:12px;vertical-align:top;"></span> &nbsp;&nbsp;<i id="maxic" class="fa fa-angle-up tooltipped" data-toggle="tooltip" data-placement="top" title="<%= i18n.__("Restore") %>"></i></div>    
+    <div class="maximize-icong" style="visibility:hidden"><span class="buffer_percent" style="font-size:12px;vertical-align:top;"></span> <i class="fa fa-play" style="font-size:12px;vertical-align:middle;"></i> <span class="title" style="font-size:12px;vertical-align:top;"></span> &nbsp;&nbsp;<i id="maxic" class="fa fa-angle-up tooltipped" data-toggle="tooltip" data-placement="top" title="<%= i18n.__("Restore") %>"></i></div>    
     <div style="background-image:url( <%= backdrop %> )" class="loading-background"></div>
     <div class="loading-background-overlay"></div>
 
     <div class="state">
-        <div class="title"></div>
+        <div class="title tooltipped" data-toggle="tooltip" data-placement="bottom"></div>
         <div class="external-play" style="visibility:hidden"><%= i18n.__("Streaming to") %> <span class="player-name"></span></div>
         <!-- download -->
         <div class="text_download"><%= i18n.__(state) %></div>
@@ -36,6 +39,9 @@
         </div>
         <div class="cancel-button">
             <div class="cancel-button-text"><%= i18n.__("Cancel") %></div>
+        </div>
+        <div class="open-button tooltipped" data-toggle="tooltip" data-placement="top" title="<%= i18n.__("Open Temporary Folder") %>" style="visibility:hidden">
+            <div class="open-button-text"><i class="fa fa-download"></i></div>
         </div>
     </div>
     <div class="warning-nospace">

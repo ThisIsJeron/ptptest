@@ -88,6 +88,14 @@
         <i id="filterbar-torrent-collection" class="fa fa-folder-open torrent-collection tooltipped" data-toggle="tooltip" data-placement="bottom" title="<%= i18n.__("Torrent Collection") %>"></i>
     </li>
 
+    <% if (Settings.activateTempf) { %>
+    <li style="display:block">
+    <% } else { %>
+    <li style="display:none">
+    <% } %>
+        <i id="filterbar-tempf" class="fa fa-download about tooltipped" data-toggle="tooltip" data-placement="bottom" title="<%= i18n.__("Temporary Folder") %>"></i>
+    </li>
+
     <!-- About -->
     <li>
         <i id="filterbar-about" class="fa fa-info-circle about tooltipped" data-toggle="tooltip" data-placement="bottom" title="<%= i18n.__("About") %>"></i>

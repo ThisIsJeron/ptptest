@@ -1,6 +1,6 @@
 (function (App) {
     'use strict';
-
+    var ddone = 'false';
     var Loading = Marionette.View.extend({
         template: '#loading-tpl',
         className: 'app-overlay',
@@ -36,17 +36,21 @@
 
         events: {
             'click .cancel-button': 'cancelStreaming',
+            'click .open-button': 'tempf',
             'click .pause': 'pauseStreaming',
             'click .stop': 'stopStreaming',
             'click .play': 'resumeStreaming',
             'click .forward': 'forwardStreaming',
             'click .backward': 'backwardStreaming',
+            'click .minimize-icon': 'minDetails',
+            'click .maximize-icon': 'minDetails',
+            'click .maximize-icong': 'minDetails',
+            'mousedown .title': 'filenametoclip',
             'click .playing-progressbar': 'seekStreaming'
         },
 
         initialize: function () {
             var that = this;
-
             App.vent.trigger('settings:close');
             App.vent.trigger('about:close');
 
@@ -67,6 +71,34 @@
             win.info('Loading torrent');
 
             this.listenTo(this.model, 'change:state', this.onStateUpdate);
+            ddone = 'false';
+            $('.button').css('background-color', '#707070');
+            $('.button').css('cursor', 'not-allowed');
+            $('.button').prop('disabled', true);
+            $('.button').css('opacity', '0.2');
+            $('#watch-now').prop('disabled', true);
+            $('#watch-now2').prop('disabled', true);
+            $('.sdow-watchnow').css('background-color', '#707070');
+            $('.sdow-watchnow').css('cursor', 'not-allowed');
+            $('.sdow-watchnow').prop('disabled', true);
+            $('.sdow-watchnow').css('visibility', 'hidden');
+            $('.online-search2').css('cursor', 'not-allowed');
+            $('.online-search2').css('opacity', '0.2');
+            $('.online-search2').prop('disabled', true);
+            $('.online-search2').attr('data-original-title', '');
+            $('.online-search3').css('cursor', 'not-allowed');
+            $('.online-search3').css('opacity', '0.2');
+            $('.online-search3').prop('disabled', true);
+            $('.online-search3').attr('data-original-title', '');
+            $('.result-item').css('cursor', 'not-allowed');
+            $('.result-item').css('opacity', '0.7');
+            $('.result-item').prop('disabled', true);
+            $('.file-item').css('cursor', 'not-allowed');
+            $('.file-item').css('opacity', '0.7');
+            $('.file-item').prop('disabled', true);
+            Mousetrap.bind('ctrl+v', function (e) {
+               e.preventDefault();
+            });
         },
 
         initKeyboardShortcuts: function () {
@@ -80,6 +112,32 @@
             Mousetrap.unbind(['esc', 'backspace']);
         },
 
+        minDetails: function () {	
+           if ($('.minimize-icon').css('visibility') == 'visible') {	
+              $('.loading').css('height', '0px');
+              $('.loading').css('width', '0px');
+              $('.loading').css('float', 'right');
+              $('.loading-background').css('visibility', 'hidden');
+              $('.minimize-icon').css('visibility', 'hidden');
+              if (ddone === 'false') {
+                 $('.maximize-icon').css('visibility', 'visible');
+              } else {
+                 $('.maximize-icong').css('visibility', 'visible');
+              };
+              $('.filter-bar').show();
+           } else if (($('.maximize-icon').css('visibility') == 'visible') || ($('.maximize-icong').css('visibility') == 'visible')) {
+              $('.loading').css('height', '100%');
+              $('.loading').css('width', '100%');
+              $('.loading').css('float', '');
+              $('.loading-background').css('visibility', 'visible');
+              $('.maximize-icon').css('visibility', 'hidden');
+              $('.maximize-icong').css('visibility', 'hidden');
+              $('.minimize-icon').css('visibility', 'visible');
+              $('.filter-bar').hide();
+           } else {
+           }
+        },
+
         onAttach: function () {
             $('.filter-bar').hide();
             $('#header').addClass('header-shadow');
@@ -87,6 +145,13 @@
             App.LoadingView = this;
 
             this.initKeyboardShortcuts();
+            $('.minimize-icon,#maxic,.open-button,.title').tooltip({
+                html: true,
+                delay: {
+                    'show': 800,
+                    'hide': 0
+                }
+            });
         },
 
         onStateUpdate: function () {
@@ -99,6 +164,14 @@
 
             this.listenTo(this.model.get('streamInfo'), 'change', this.onInfosUpdate);
 
+            if ((Settings.activateToolf === true) && (Settings.activateTools === true)) {
+                $('.loading .state .title').attr('data-original-title', '<br>' + '&nbsp;&nbsp;&nbsp;&nbsp;' + streamInfo.get('filename') + '&nbsp;&nbsp;-&nbsp;&nbsp;' + Common.fileSize(streamInfo.get('size')) + '&nbsp;&nbsp;&nbsp;&nbsp;' + '<br><br>Stream url:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;' + streamInfo.get('src').replace('127.0.0.1', Settings.ipAddress) + '<br><br>');
+            } else if ((Settings.activateToolf === true) && (Settings.activateTools === false)) {
+                $('.loading .state .title').attr('data-original-title', '<br>' + '&nbsp;&nbsp;&nbsp;&nbsp;' + streamInfo.get('filename') + '&nbsp;&nbsp;-&nbsp;&nbsp;' + Common.fileSize(streamInfo.get('size')) + '&nbsp;&nbsp;&nbsp;&nbsp;' + '<br><br>');
+            } else if ((Settings.activateToolf === false) && (Settings.activateTools === true)) {
+                $('.loading .state .title').attr('data-original-title', '<br>' + '&nbsp;&nbsp;&nbsp;&nbsp;' + 'Stream url:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;' + streamInfo.get('src').replace('127.0.0.1', Settings.ipAddress) + '&nbsp;&nbsp;&nbsp;&nbsp;' + '<br><br>');
+            };
+
             if (state === 'downloading') {
                 this.listenTo(this.model.get('streamInfo'), 'change:downloaded', this.onProgressUpdate);
             }
@@ -107,9 +180,11 @@
                 this.ui.stateTextDownload.hide();
                 this.ui.progressbar.hide();
                 if (streamInfo && streamInfo.get('device')) {
-                    this.ui.cancel_button.css('visibility', 'hidden');
-                    this.ui.controls.css('visibility', 'visible');
-                    this.ui.playingbarBox.css('visibility', 'visible');
+                    if (Settings.activateLoCtrl === true) {
+                        this.ui.cancel_button.css('visibility', 'hidden');
+                        this.ui.controls.css('visibility', 'visible');
+                        this.ui.playingbarBox.css('visibility', 'visible');
+                    }
                     this.ui.playingbar.css('width', '0%');
 
                     // Update gui on status update.
@@ -163,6 +238,19 @@
                 this.ui.bufferPercent.text(streamInfo.get('downloadedPercent').toFixed() + '%');
                 this.ui.stateTextDownload.text(i18n.__('Downloaded')).show();
             }
+
+            if ((ddone === 'false') && (streamInfo.get('downloadedPercent').toFixed() === '100')) {
+               ddone = 'true';
+               $('.cancel-button').css('background-color', '#27ae60');
+               if (Settings.activateTempfl === true) {
+                  $('.cancel-button').css('left', '-45px');
+                  $('.open-button').css('visibility', 'visible');
+               };
+            };
+            if ((ddone === 'true') && ($('.maximize-icon').css('visibility') == 'visible')) {
+               $('.maximize-icong').css('visibility', 'visible');
+               $('.maximize-icon').css('visibility', 'hidden');
+            };
         },
 
         onDeviceStatus: function (status) {
@@ -200,6 +288,24 @@
             App.vent.trigger('stream:stop');
             App.vent.trigger('player:close');
             App.vent.trigger('torrentcache:stop');
+        },
+
+        tempf: function (e) {
+            nw.Shell.openExternal(Settings.tmpLocation);
+        },
+
+        filenametoclip: function (e) {
+            if ($('.minimize-icon').css('visibility') == 'visible') {
+                var streamInfo = this.model.get('streamInfo');
+                var clipboard = nw.Clipboard.get();
+                if (e.button === 0) {
+                    clipboard.set(streamInfo.get('filename'), 'text');
+                    $('.notification_alert').text(i18n.__('The filename was copied to the clipboard')).fadeIn('fast').delay(2500).fadeOut('fast');
+                } else if (e.button === 2) {
+                    clipboard.set(streamInfo.get('src').replace('127.0.0.1', Settings.ipAddress), 'text');
+                    $('.notification_alert').text(i18n.__('The stream url was copied to the clipboard')).fadeIn('fast').delay(2500).fadeOut('fast');
+                };
+            };
         },
 
         pauseStreaming: function () {
@@ -288,6 +394,35 @@
                 App.vent.trigger('show:closeDetail');
                 App.vent.trigger('movie:closeDetail');
             });
+               $('.button').css('background-color', '');
+               $('.button').css('cursor', '');
+               $('.button').prop('disabled', false);
+               $('.button').css('opacity', '');
+               $('#watch-now').prop('disabled', false);
+               $('#watch-now2').prop('disabled', false);
+               $('.sdow-watchnow').css('background-color', '');
+               $('.sdow-watchnow').css('cursor', '');
+               $('.sdow-watchnow').prop('disabled', false);
+               $('.sdow-watchnow').css('visibility', 'visible');
+               $('.online-search2').css('cursor', '');
+               $('.online-search2').css('opacity', '');
+               $('.online-search2').prop('disabled', false);
+               $('.online-search2').attr('data-original-title', 'Open .torrent');
+               $('.online-search3').css('cursor', '');
+               $('.online-search3').css('opacity', '');
+               $('.online-search3').prop('disabled', false);
+               $('.online-search3').attr('data-original-title', 'Paste Magnet');
+               $('.result-item').css('cursor', '');
+               $('.result-item').css('opacity', '');
+               $('.result-item').prop('disabled', false);
+               $('.file-item').css('cursor', '');
+               $('.file-item').css('opacity', '');
+               $('.file-item').prop('disabled', false);
+               $('.cancel-button').css('background-color', '');
+               $('.cancel-button').css('left', '');
+               $('.open-button').css('visibility', '');
+               Mousetrap.bind('ctrl+v', function (e) {
+               });
         }
     });
 

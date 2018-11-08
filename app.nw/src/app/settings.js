@@ -1,4 +1,4 @@
-/** Default settings **/
+﻿/** Default settings **/
 var Settings = {
     projectName: 'Popcorn-Time',
     projectUrl: 'http://butterproject.org',
@@ -93,18 +93,25 @@ Settings.trackers = {
         'udp://exodus.desync.com:6969/announce',
         'udp://tracker.opentrackr.org:1337/announce',
         'udp://9.rarbg.com:2710/announce',
+        'udp://9.rarbg.com:2730/announce',
         'udp://tracker.openbittorrent.com:80',
+        'udp://torrent.gresille.org:80/announce',
+        'udp://eddie4.nl:6969/announce',
+        'udp://tracker.zer0day.to:1337',
+        'udp://p4p.arenabg.ch:1337',
+        'udp://p4p.arenabg.com:1337',
+        'udp://tracker.leechers-paradise.org:6969',
+        'udp://tracker.internetwarriors.net:1337',
         'udp://tracker.publicbt.com:80/announce'
     ]
 };
 
 // User interface
-Settings.language = '';
+Settings.language = 'en';
 Settings.translateSynopsis = true;
 Settings.coversShowRating = true;
 Settings.watchedCovers = 'fade';
-Settings.showAdvancedSettings = false;
-
+Settings.showAdvancedSettings = true;
 Settings.postersMinWidth = 134;
 Settings.postersMaxWidth = 294;
 Settings.postersMinFontSize = 0.8;
@@ -115,7 +122,8 @@ Settings.postersJump = [134, 154, 174, 194, 214, 234, 254, 274, 294];
 
 //Playback
 Settings.alwaysFullscreen = false;
-Settings.playNextEpisodeAuto = true;
+Settings.playNextEpisodeAuto = false;
+Settings.activateLoCtrl = false;
 Settings.chosenPlayer = 'local';
 
 // Advanced UI
@@ -123,9 +131,13 @@ Settings.alwaysOnTop = false;
 Settings.theme = 'Official_-_Dark_theme';
 Settings.ratingStars = true; //trigger on click in details
 Settings.hideSeasons = true;
-Settings.startScreen = 'Movies';
+Settings.startScreen = 'Movies (YTS.am)';
 Settings.lastTab = '';
 Settings.rememberFilters = false;
+Settings.moviesTabDisable = false;
+Settings.seriesTabDisable = false;
+Settings.animeTabDisable = false;
+Settings.indieTabDisable = false;
 
 // Quality
 Settings.shows_default_quality = '720p';
@@ -134,7 +146,7 @@ Settings.moviesShowQuality = false;
 Settings.movies_quality = 'all';
 
 // Subtitles
-Settings.subtitle_language = 'none';
+Settings.subtitle_language = 'en';
 Settings.subtitle_size = '28px';
 Settings.subtitle_color = '#ffffff';
 Settings.subtitle_decoration = 'Outline';
@@ -142,8 +154,8 @@ Settings.subtitle_font = 'Arial';
 
 // More options
 Settings.httpApiPort = 8008;
-Settings.httpApiUsername = 'butter';
-Settings.httpApiPassword = 'butter';
+Settings.httpApiUsername = 'popcorn';
+Settings.httpApiPassword = 'popcorn';
 
 // Trakt.tv
 Settings.traktStatus = false;
@@ -156,7 +168,7 @@ Settings.traktPlayback = true;
 Settings.tvstAccessToken = '';
 
 // OpenSubtitles
-Settings.opensubtitlesAutoUpload = true;
+Settings.opensubtitlesAutoUpload = false;
 Settings.opensubtitlesAuthenticated = false;
 Settings.opensubtitlesUsername = '';
 Settings.opensubtitlesPassword = '';
@@ -167,17 +179,24 @@ Settings.streamPort = 0; // 0 = Random
 Settings.tmpLocation = path.join(os.tmpDir(), Settings.projectName);
 Settings.databaseLocation = path.join(data_path, 'data');
 Settings.deleteTmpOnClose = true;
-Settings.automaticUpdating = true;
-Settings.UpdateSeed = true;
+Settings.automaticUpdating = false;
+Settings.UpdateSeed = false;
 Settings.events = true;
 Settings.minimizeToTray = false;
 Settings.bigPicture = false;
 
 // Features
 Settings.activateTorrentCollection = true;
-Settings.activateWatchlist = true;
-Settings.activateRandomize = true;
-Settings.onlineSearchEngine = 'ExtraTorrent';
+Settings.useleetx = true;
+Settings.usetpb = true;
+Settings.userarbg = true;
+Settings.activateWatchlist = false;
+Settings.activateRandomize = false;
+Settings.activateTempf = true;
+Settings.activateTempfl = true;
+Settings.activateToolf = true;
+Settings.activateTools = true;
+Settings.onlineSearchEngine = 'rarbg';
 
 // Ratio
 Settings.totalDownloaded = 0;

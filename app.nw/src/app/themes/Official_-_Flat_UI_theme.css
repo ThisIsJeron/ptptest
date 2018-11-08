@@ -196,7 +196,7 @@ a img {
   transition: all 0.5s;
 }
 .tooltip-inner {
-  max-width: 200px;
+  max-width: none;
   padding: 3px 8px;
   color: #fff;
   text-align: center;
@@ -1608,6 +1608,66 @@ body,
   -webkit-transition: all 0.5s;
   transition: all 0.5s;
 }
+.loading .minimize-icon {
+  top: 45px;
+  right: 20px;
+  position: fixed;
+  color: #e74c3c;
+  font-size: 25px;
+  line-height: 25px;
+  cursor: pointer;
+  z-index: 100;
+  -webkit-font-smoothing: antialiased;
+}
+.loading .maximize-icon {
+  right: 20px;
+  bottom: 20px;
+  position: fixed;
+  color: #1abc9c;
+  font-size: 25px;
+  line-height: 25px;
+  cursor: pointer;
+  z-index: 100;
+  background: #f5f5f5;
+  padding-left: 20px;
+  padding-right: 20px;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  opacity: 0.9;
+  border-radius: 3px;
+  -webkit-font-smoothing: antialiased;
+}
+.loading .minimize-icon:hover {
+  color: #c0392b;
+}
+.loading .maximize-icon:hover {
+  color: #fff;
+  opacity: 1;
+  background: #1abc9c;
+}
+.loading .maximize-icong {
+  right: 20px;
+  bottom: 20px;
+  position: fixed;
+  color: #1abc9c;
+  font-size: 25px;
+  line-height: 25px;
+  cursor: pointer;
+  z-index: 100;
+  background: #f5f5f5;
+  padding-left: 20px;
+  padding-right: 20px;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  opacity: 0.9;
+  border-radius: 3px;
+  -webkit-font-smoothing: antialiased;
+}
+.loading .maximize-icong:hover {
+  color: #fff;
+  opacity: 1;
+  background: #27ae60;
+}
 .movie-detail .close-icon,
 .shows-container-contain .close-icon {
   top: 75px;
@@ -2318,7 +2378,7 @@ body,
 }
 .filter-bar .search form.edited input,
 .filter-bar .search form input:focus {
-  width: 130px;
+  width: 180px;
   background-color: #495c6e;
   color: #fff;
 }
@@ -2832,7 +2892,7 @@ body,
   opacity: 0;
   background-position-x: 50%;
   background-position-y: -33px;
-  -webkit-filter: blur(15px) brightness(0.7);
+  -webkit-filter: blur(5px);
   background-repeat: no-repeat;
   -webkit-background-size: cover;
   background-size: cover;
@@ -3611,8 +3671,8 @@ body,
   background-repeat: no-repeat;
   -webkit-background-size: cover;
   background-size: cover;
-  background-position: center;
-  -webkit-filter: blur(60px) brightness(0.7);
+  background-position: 0% 4%;
+  -webkit-filter: blur(20px) brightness(0.7);
   background-color: #fff;
   opacity: 0;
 }
@@ -4248,8 +4308,7 @@ body,
   position: fixed;
   background-color: #fff;
   -webkit-user-select: none;
-  opacity: 1;
-  background-image: url("../images/bg-header.jpg");
+  opacity: 0.9;
   -webkit-background-size: cover;
   background-size: cover;
   background-position: 50% 50%;
@@ -4372,6 +4431,16 @@ body,
   -webkit-background-size: contain;
   background-size: contain;
 }
+.about-container .content .icons_social a.github_icon {
+  background: url("../images/icons/icon-github.png") no-repeat center;
+  -webkit-background-size: contain;
+  background-size: contain;
+}
+.about-container .content .icons_social a.reddit_icon {
+  background: url("../images/icons/icon-reddit.png") no-repeat center;
+  -webkit-background-size: contain;
+  background-size: contain;
+}
 .about-container .content .icons_social a.blog_icon {
   background: url("../images/icons/icon-blog.png") no-repeat center;
   -webkit-background-size: contain;
@@ -4447,14 +4516,15 @@ body,
   width: 100%;
   position: fixed;
   -webkit-user-select: none;
-  opacity: 1;
+  background: #fff;
+  opacity: 0.9;
 }
 .help-container .overlay-content {
   height: 100%;
   width: 100%;
   position: absolute;
-  background: #fff;
-  opacity: 0.95;
+  background: rgba(0,0,0,0.4);
+  opacity: 0.9;
   z-index: -1;
 }
 .help-container h1 {
@@ -4833,14 +4903,15 @@ body,
   width: 100%;
   position: fixed;
   -webkit-user-select: none;
-  opacity: 1;
+  background: #fff;
+  opacity: 0.9;
 }
 .keyboard-container .overlay-content {
   height: 100%;
   width: 100%;
   position: absolute;
-  background: #fff;
-  opacity: 0.95;
+  background: rgba(0,0,0,0.4);
+  opacity: 0.9;
   z-index: -1;
 }
 .keyboard-container h1 {
@@ -5191,9 +5262,70 @@ body,
 .torrent-collection-container .content .onlinesearch {
   position: relative;
   top: -10px;
-  padding-left: 170px;
-  width: 430px;
+  padding-left: 190px;
+  width: 550px;
   margin: 0 auto;
+}
+.torrent-collection-container .content .onlinesearch .engine-selector {
+  position: absolute;
+  margin-left: -185px;
+}
+.torrent-collection-container .content .onlinesearch .engine-selector div {
+  width: 30px;
+  height: 30px;
+  opacity: 0.2;
+  float: left;
+  cursor: pointer;
+  -webkit-transition: opacity 0.1s ease-in;
+  transition: opacity 0.1s ease-in;
+}
+.torrent-collection-container .content .onlinesearch .engine-selector div:hover {
+  width: 30px;
+  height: 30px;
+  opacity: 0.9;
+  float: left;
+  cursor: pointer;
+  -webkit-transition: opacity 0.1s ease-in;
+  transition: opacity 0.1s ease-in;
+}
+.torrent-collection-container .content .onlinesearch .engine-selector div#leetx-icon {
+  -webkit-filter: brightness(0.65);
+  background: url("../images/icons/leetx.png");
+  -webkit-background-size: contain;
+  background-size: contain;
+}
+.torrent-collection-container .content .onlinesearch .engine-selector div#tpb-icon {
+  -webkit-filter: brightness(0.65);
+  background: url("../images/icons/tpb.png");
+  -webkit-background-size: contain;
+  background-size: contain;
+}
+.torrent-collection-container .content .onlinesearch .engine-selector div#rarbg-icon {
+  -webkit-filter: brightness(0.65);
+  background: url("../images/icons/rarbg.png");
+  -webkit-background-size: contain;
+  background-size: contain;
+}
+.torrent-collection-container .content .onlinesearch .engine-selector div.active {
+  opacity: 1;
+}
+.torrent-collection-container .content .onlinesearch .online-search2 {
+  margin-left: 20px;
+  cursor: pointer;
+  -webkit-transition: color 0.3s;
+  transition: color 0.3s;
+}
+.torrent-collection-container .content .onlinesearch .online-search2:hover {
+  color: #48c9b0;
+}
+.torrent-collection-container .content .onlinesearch .online-search3 {
+  margin-left: 5px;
+  cursor: pointer;
+  -webkit-transition: color 0.3s;
+  transition: color 0.3s;
+}
+.torrent-collection-container .content .onlinesearch .online-search3:hover {
+  color: #48c9b0;
 }
 .torrent-collection-container .content .onlinesearch input[type="text"] {
   border: 0 !important;
@@ -5207,6 +5339,7 @@ body,
   cursor: text;
   outline: 0 !important;
   height: 30px;
+  margin-left: -7px;
 }
 .torrent-collection-container .content .onlinesearch .online-search {
   margin-left: 5px;
@@ -5228,7 +5361,7 @@ body,
   border: 0 !important;
   -webkit-appearance: none;
   height: 30px;
-  width: 85px;
+  width: 78px;
   line-height: 25px;
   margin-top: -9px;
   background-color: #34495e;
@@ -5488,7 +5621,7 @@ body,
 }
 .torrent-collection-container .content .collection-actions .collection-open {
   position: fixed;
-  right: 50px;
+  right: 20px;
   bottom: 15px;
   -webkit-transition: all 0.3s;
   transition: all 0.3s;
@@ -6243,7 +6376,7 @@ body,
   background-position-y: 0px;
   -webkit-background-size: cover;
   background-size: cover;
-  -webkit-filter: blur(15px) brightness(0.7);
+  -webkit-filter: blur(5px);
 }
 .loading .loading-background-overlay {
   width: 100%;
@@ -6349,6 +6482,47 @@ body,
   background: #16a085;
 }
 .loading .state .cancel-button .cancel-button-text {
+  -webkit-backface-visibility: hidden;
+  position: relative;
+  color: #fff;
+  font-family: 'Open Sans Semibold', 'Open Sans', sans-serif;
+  -webkit-font-smoothing: antialiased;
+  text-align: center;
+  top: 12px;
+  font-size: 12px;
+}
+.loading .state .open-button {
+  bottom: 20px;
+  z-index: 2;
+  position: absolute;
+  cursor: pointer;
+  width: 35px;
+  height: 35px;
+  margin: auto;
+  left: 130px;
+  right: 0;
+  -moz-border-radius: 3px;
+  -webkit-border-radius: 3px;
+  border-radius: 3px;
+  -moz-background-clip: padding;
+  -webkit-background-clip: padding-box;
+  -webkit-background-clip: padding;
+  background-clip: padding-box;
+  background-color: #27ae60;
+  -webkit-backface-visibility: hidden;
+  -webkit-transition: all 0.5s;
+  transition: all 0.5s;
+}
+.loading .state .open-button:hover {
+  background: #27ae60;
+  text-decoration: none;
+}
+.loading .state .open-button:active {
+  -webkit-box-shadow: inset 0 1px 4px rgba(0,0,0,0.6);
+  box-shadow: inset 0 1px 4px rgba(0,0,0,0.6);
+  background: #27ae60;
+}
+.loading .state .open-button .open-button-text {
   -webkit-backface-visibility: hidden;
   position: relative;
   color: #fff;

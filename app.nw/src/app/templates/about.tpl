@@ -2,11 +2,11 @@
     <div class="fa fa-times close-icon"></div>
     <div class="overlay-content"></div>
     <div class="margintop"></div>
-    <img class="icon-title" src="/src/app/images/butter-logo.svg">
+    <img class="icon-title" src="/src/app/images/popcorn-time-logo.svg">
     <div class="content">
 
         <div class="title-version">
-            <a data-toggle="tooltip" data-placement="top" title=<%= i18n.__("Changelog") %> id='changelog'><%= App.settings.version %> "<%= App.settings.releaseName %>" Beta </a>
+            <a data-toggle="tooltip" data-placement="top" title=<%= i18n.__("Changelog") %> id='changelog'><%= App.settings.version %> "<%= App.settings.releaseName %>" (Patched)</a>
             <% if(App.git) { %>
                 - <small><i><%= App.git.branch %> (<a class="links" href="<%= Settings.commitUrl %>/<%= App.git.commit %>"><%= App.git.commit.slice(0,8) %></a>)</i></small>
             <% } %>
@@ -25,12 +25,12 @@
 
         <div class="icons_social">
             <a href="<%= Settings.projectUrl %>" data-toggle="tooltip" data-placement="top" title="<%= Settings.projectUrl %>" class='links site_icon'></span></a>
-            <a href='http://twitter.com/<%= Settings.projectTwitter %>' data-toggle="tooltip" data-placement="top" title="twitter.com/<%= Settings.projectTwitter %>" class='links twitter_icon'></span></a>
-            <a href='http://www.fb.com/<%= Settings.projectFacebook %>' data-toggle="tooltip" data-placement="top" title="fb.com/<%= Settings.projectFacebook %>" class='links facebook_icon'></span></a>
-            <a href='http://plus.google.com/+<%= Settings.projectGooglePlus %>/posts' data-toggle="tooltip" data-placement="top" title="plus.google.com/+<%= Settings.projectGooglePlus %>" class='links google_icon'></span></a>
-            <a href='<%= Settings.projectUrl %>' data-toggle="tooltip" data-placement="top" title="<%= Settings.projectUrl %>" class='links gitlab_icon'></span></a>
             <a href='<%= Settings.projectBlog %>' data-toggle="tooltip" data-placement="top" title="<%= Settings.projectBlog %>" class='links blog_icon'></span></a>
-            <a href='<%= Settings.projectForum %>' data-toggle="tooltip" data-placement="top" title="<%= Settings.projectForum %>" class='links forum_icon'></span></a>
+            <a href='http://twitter.com/<%= Settings.projectTwitter %>' data-toggle="tooltip" data-placement="top" title="https://twitter.com/<%= Settings.projectTwitter %>" class='links twitter_icon'></span></a>
+            <a href='http://plus.google.com/+<%= Settings.projectGooglePlus %>/posts' data-toggle="tooltip" data-placement="top" title="https://plus.google.com/+<%= Settings.projectGooglePlus %>" class='links google_icon'></span></a>
+            <a href='http://www.fb.com/<%= Settings.projectFacebook %>' data-toggle="tooltip" data-placement="top" title="https://www.facebook.com/<%= Settings.projectFacebook %>" class='links facebook_icon'></span></a>
+            <a href='https://www.reddit.com/r/PopCornTime/' data-toggle="tooltip" data-placement="top" title="https://www.reddit.com/r/PopCornTime/" class='links reddit_icon'></span></a>
+            <a href='https://github.com/popcorn-official/' data-toggle="tooltip" data-placement="top" title="https://github.com/popcorn-official/" class='links github_icon'></span></a>
         </div>
 
         <div class="last-line">

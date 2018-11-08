@@ -228,6 +228,10 @@
             case 'translateSynopsis':
             case 'showAdvancedSettings':
             case 'alwaysOnTop':
+            case 'moviesTabDisable':
+            case 'seriesTabDisable':
+            case 'animeTabDisable':
+            case 'indieTabDisable':
             case 'traktSyncOnStart':
             case 'traktPlayback':
             case 'playNextEpisodeAuto':
@@ -240,6 +244,11 @@
             case 'activateTorrentCollection':
             case 'activateWatchlist':
             case 'activateRandomize':
+            case 'activateLoCtrl':
+            case 'activateTempf':
+            case 'activateTempfl':
+            case 'activateToolf':
+            case 'activateTools':
             case 'opensubtitlesAutoUpload':
             case 'subtitles_bold':
             case 'rememberFilters':
@@ -316,8 +325,10 @@
                 break;
             case 'language':
             case 'watchedCovers':
+                var scrollp = $('.settings-container-contain').scrollTop();
                 App.vent.trigger('movies:list');
                 App.vent.trigger('settings:show');
+                $('.settings-container-contain').scrollTop(scrollp);
                 break;
             case 'alwaysOnTop':
                 win.setAlwaysOnTop(value);
@@ -346,19 +357,34 @@
                 break;
             case 'activateRandomize':
             case 'activateWatchlist':
+            case 'activateLoCtrl':
+            case 'activateTempf':
+            case 'activateTempfl':
+            case 'activateToolf':
+            case 'activateTools':
+            case 'moviesTabDisable':
+            case 'seriesTabDisable':
+            case 'animeTabDisable':
+            case 'indieTabDisable':
+                var scrollp = $('.settings-container-contain').scrollTop();
                 App.vent.trigger('movies:list');
                 App.vent.trigger('settings:show');
+                $('.settings-container-contain').scrollTop(scrollp);
                 break;
             case 'movies_quality':
             case 'translateSynopsis':
+                var scrollp = $('.settings-container-contain').scrollTop();
                 App.Providers.delete('Yts');
                 App.vent.trigger('movies:list');
                 App.vent.trigger('settings:show');
+                $('.settings-container-contain').scrollTop(scrollp);
                 break;
             case 'tvAPI':
+                var scrollp = $('.settings-container-contain').scrollTop();
                 App.Providers.delete('TVApi');
                 App.vent.trigger('movies:list');
                 App.vent.trigger('settings:show');
+                $('.settings-container-contain').scrollTop(scrollp);
                 break;
             case 'bigPicture':
                 if (!ScreenResolution.SD) {

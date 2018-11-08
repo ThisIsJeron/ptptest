@@ -214,11 +214,11 @@
                     } else if (Settings.startScreen === 'Torrent-collection' || (lastOpen && Settings.lastTab === 'Torrent-collection')) {
                         that.movieTabShow(); //needed because Torrentcollection isnt a real collection
                         that.showTorrentCollection();
-                    } else if (Settings.startScreen === 'TV Series' || (lastOpen && Settings.lastTab === 'TV Series')) {
+                    } else if (Settings.startScreen === 'Series' || (lastOpen && Settings.lastTab === 'Series')) {
                         that.tvshowTabShow();
                     } else if (Settings.startScreen === 'Anime' || (lastOpen && Settings.lastTab === 'Anime')) {
                         that.animeTabShow();
-                    } else if (Settings.startScreen === 'Indie' || (lastOpen && Settings.lastTab === 'Indie')) {
+                    } else if (Settings.startScreen === 'Movies (MovieApi)' || (lastOpen && Settings.lastTab === 'Movies (MovieApi)')) {
                         that.indieTabShow();
                     } else {
                         that.movieTabShow();

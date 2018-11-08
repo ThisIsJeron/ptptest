@@ -3,7 +3,10 @@
     // Torrent Health
     var torrentHealth = require('webtorrent-health'),
     cancelTorrentHealth = function () {},
-    torrentHealthRestarted = null;
+    torrentHealthRestarted = null,
+    ytssubt = '',
+    opensubt = '',
+    flagt = '';
 
     App.View.MovieDetail = Marionette.View.extend({
         template: '#movie-detail-tpl',
@@ -25,6 +28,8 @@
             'click .watched-toggle': 'toggleWatched',
             'click .movie-imdb-link': 'openIMDb',
             'mousedown .magnet-link': 'openMagnet',
+            'click .sub-dropdown': 'toggleDropdown',
+            'click .sub-flag-icon': 'closeDropdown',
             'click .playerchoicemenu li a': 'selectPlayer',
             'click .rating-container': 'switchRating',
             'click .health-icon': 'resetHealth'
@@ -32,6 +37,10 @@
 
         initialize: function () {
             var _this = this;
+            this.getMetaData();
+            if ((Settings.translateSynopsis) && (Settings.language != 'en')) {
+                this.getTranslatedData();
+            }
 
             //Handle keyboard shortcuts when other views are appended or removed
 
@@ -82,7 +91,7 @@
 
             this.getTorrentHealth();
 
-            $('.star-container,.movie-imdb-link,.q720,input,.magnet-link').tooltip({
+            $('.star-container,.movie-imdb-link,.q720,input,.magnet-link,.sub-dropdown,.metaitem').tooltip({
                 html: true
             });
 
@@ -151,6 +160,301 @@
 
             App.Device.Collection.setDevice(Settings.chosenPlayer);
             App.Device.ChooserView('#player-chooser').render();
+            if (($('.loading .maximize-icon').css('visibility') == 'visible') || ($('.loading .maximize-icong').css('visibility') == 'visible')) {
+               $('.button').css('background-color', '#707070');
+               $('.button').css('cursor', 'not-allowed');
+               $('.button').prop('disabled', true);
+               $('.button').css('opacity', '0.2');
+               $('#watch-now').prop('disabled', true);
+               $('#watch-now2').prop('disabled', true);
+            }
+
+            switch (Settings.subtitle_language) {
+            case 'en':
+                ytssubt = 'flag-gb';
+                opensubt = 'eng';
+                flagt = 'url("images/flags/english.png")';
+                break;
+            case 'ar':
+                ytssubt = 'flag-sa';
+                opensubt = 'ara';
+                flagt = 'url("images/flags/arabic.png")';
+                break;
+            case 'bg':
+                ytssubt = 'flag-bg';
+                opensubt = 'bul';
+                flagt = 'url("images/flags/bulgarian.png")';
+                break;
+            case 'bs':
+                ytssubt = 'flag-notavail';
+                opensubt = 'bos';
+                flagt = 'url("images/flags/bosnian.png")';
+                break;
+            case 'cs':
+                ytssubt = 'flag-cz';
+                opensubt = 'cze';
+                flagt = 'url("images/flags/czech.png")';
+                break;
+            case 'da':
+                ytssubt = 'flag-dk';
+                opensubt = 'dan';
+                flagt = 'url("images/flags/danish.png")';
+                break;
+            case 'de':
+                ytssubt = 'flag-de';
+                opensubt = 'ger';
+                flagt = 'url("images/flags/german.png")';
+                break;
+            case 'el':
+                ytssubt = 'flag-gr';
+                opensubt = 'ell';
+                flagt = 'url("images/flags/greek.png")';
+                break;
+            case 'es':
+                ytssubt = 'flag-es';
+                opensubt = 'spa';
+                flagt = 'url("images/flags/spanish.png")';
+                break;
+            case 'et':
+                ytssubt = 'flag-notavail';
+                opensubt = 'est';
+                flagt = 'url("images/flags/estonian.png")';
+                break;
+            case 'eu':
+                ytssubt = 'flag-notavail';
+                opensubt = 'baq';
+                flagt = 'url("images/flags/basque.png")';
+                break;
+            case 'fa':
+                ytssubt = 'flag-ir';
+                opensubt = 'per';
+                flagt = 'url("images/flags/farsi.png")';
+                break;
+            case 'fi':
+                ytssubt = 'flag-fi';
+                opensubt = 'fin';
+                flagt = 'url("images/flags/finnish.png")';
+                break;
+            case 'fr':
+                ytssubt = 'flag-fr';
+                opensubt = 'fre';
+                flagt = 'url("images/flags/french.png")';
+                break;
+            case 'he':
+                ytssubt = 'flag-il';
+                opensubt = 'heb';
+                flagt = 'url("images/flags/hebrew.png")';
+                break;
+            case 'hr':
+                ytssubt = 'flag-hr';
+                opensubt = 'hrv';
+                flagt = 'url("images/flags/croatian.png")';
+                break;
+            case 'hu':
+                ytssubt = 'flag-hu';
+                opensubt = 'hun';
+                flagt = 'url("images/flags/hungarian.png")';
+                break;
+            case 'id':
+                ytssubt = 'flag-id';
+                opensubt = 'ind';
+                flagt = 'url("images/flags/indonesian.png")';
+                break;
+            case 'it':
+                ytssubt = 'flag-it';
+                opensubt = 'ita';
+                flagt = 'url("images/flags/italian.png")';
+                break;
+            case 'lt':
+                ytssubt = 'flag-lt';
+                opensubt = 'lit';
+                flagt = 'url("images/flags/lithuanian.png")';
+                break;
+            case 'nl':
+                ytssubt = 'flag-nl';
+                opensubt = 'dut';
+                flagt = 'url("images/flags/dutch.png")';
+                break;
+            case 'no':
+                ytssubt = 'flag-no';
+                opensubt = 'nor';
+                flagt = 'url("images/flags/norwegian.png")';
+                break;
+            case 'pl':
+                ytssubt = 'flag-pl';
+                opensubt = 'pol';
+                flagt = 'url("images/flags/polish.png")';
+                break;
+            case 'pt':
+                ytssubt = 'flag-pt';
+                opensubt = 'por';
+                flagt = 'url("images/flags/portuguese.png")';
+                break;
+            case 'pt-br':
+                ytssubt = 'flag-br';
+                opensubt = 'pob';
+                flagt = 'url("images/flags/brazilian.png")';
+                break;
+            case 'ro':
+                ytssubt = 'flag-ro';
+                opensubt = 'rum';
+                flagt = 'url("images/flags/romanian.png")';
+                break;
+            case 'ru':
+                ytssubt = 'flag-ru';
+                opensubt = 'rus';
+                flagt = 'url("images/flags/russian.png")';
+                break;
+            case 'sl':
+                ytssubt = 'flag-si';
+                opensubt = 'slv';
+                flagt = 'url("images/flags/slovenian.png")';
+                break;
+            case 'sr':
+                ytssubt = 'flag-rs';
+                opensubt = 'scc';
+                flagt = 'url("images/flags/serbian.png")';
+                break;
+            case 'sv':
+                ytssubt = 'flag-se';
+                opensubt = 'swe';
+                flagt = 'url("images/flags/swedish.png")';
+                break;
+            case 'th':
+                ytssubt = 'flag-th';
+                opensubt = 'tha';
+                flagt = 'url("images/flags/thai.png")';
+                break;
+            case 'tr':
+                ytssubt = 'flag-tr';
+                opensubt = 'tur';
+                flagt = 'url("images/flags/turkish.png")';
+                break;
+            case 'uk':
+                ytssubt = 'flag-notavail';
+                opensubt = 'ukr';
+                flagt = 'url("images/flags/ukrainian.png")';
+                break;
+            case 'vi':
+                ytssubt = 'flag-vn';
+                opensubt = 'vie';
+                flagt = 'url("images/flags/vietnamese.png")';
+                break;
+            case 'zh':
+                ytssubt = 'flag-cn';
+                opensubt = 'chi,zht,zhe';
+                flagt = 'url("images/flags/chinese.png")';
+                break;
+            default:
+                ytssubt = 'flag-notavail';
+                opensubt = 'notavail';
+                flagt = 'url("images/flags/snone.png")';
+            }
+
+            var ytsid = this.model.get('imdb_id');
+            var openid = ytsid.slice(2, 100);
+
+            if (flagt !== 'url("images/flags/snone.png")') {
+                $('.flag').css({"background-image": flagt, "-webkit-filter": "grayscale(100%) contrast(60%)", "opacity": "0.3"});
+                $.get('http://www.yifysubtitles.com/movie-imdb/' + ytsid, function(data) {
+                if (~data.indexOf(ytssubt)) {
+                    $('.flag').css({"background-image": flagt, "-webkit-filter": "", "opacity": "1"});
+                };
+                });
+                $.get('http://www.opensubtitles.org/en/search/sublanguageid-' + opensubt + '/imdbid-' + openid, function(data) {
+                if (~data.indexOf('Movie details')) {
+                    $('.flag').css({"background-image": flagt, "-webkit-filter": "", "opacity": "1"});
+                };
+                });
+            } else {
+                $('.flag').css('background-image', flagt).hide();
+                $('.sub-dropdown').css('opacity', '0.4');
+                $('.sub-dropdown span').html(i18n.__("Subtitles Disabled&nbsp;"));
+            };
+        },
+
+        getMetaData: function () {
+            if ((this.model.get('synopsis') == null) || (this.model.get('rating') == null) || (this.model.get('rating') == '0.0') || (this.model.get('runtime') == null) || (this.model.get('runtime') == '0') || (this.model.get('trailer') == null) || (this.model.get('cover') == null) || (this.model.get('cover') == 'images/posterholder.png') || (this.model.get('backdrop') == null) || (this.model.get('backdrop') == 'images/posterholder.png')) {
+                var imdb = this.model.get('imdb_id');
+                var api_key = Settings.tmdb.api_key;
+                var movie = function () {
+                    var tmp = null;
+                    $.ajax({
+                        url: 'http://api.themoviedb.org/3/movie/'+ imdb +'?api_key='+ api_key +'&language=en' + '&append_to_response=videos',
+                        type: 'get',
+                        dataType: 'json',
+                        async: false,
+                        global: false,
+                        success: function (data) {
+                            tmp = data;
+                        }
+                    });
+                    return tmp;
+                }();
+                if (movie) {
+                    if (this.model.get('synopsis') == null) {
+                        if (movie.overview) {
+                            this.model.set('synopsis', movie.overview);
+                        }
+                    };
+                    if ((this.model.get('rating') == null) || (this.model.get('rating') == '0.0')) {
+                        if (movie.vote_average) {
+                            this.model.set('rating', movie.vote_average);
+                        }
+                    };
+                    if ((this.model.get('runtime') == null) || (this.model.get('runtime') == '0')) {
+                        if (movie.runtime) {
+                            this.model.set('runtime', movie.runtime);
+                        }
+                    };
+                    if (this.model.get('trailer') == null) {
+                        if (movie.videos.results[0]) {
+                            this.model.set('trailer', 'http://www.youtube.com/watch?v=' + movie.videos.results[0].key);
+                        } else {
+                            this.model.set('trailer', '');
+                        }
+                    };
+                    if ((this.model.get('cover') == null) || (this.model.get('cover') == 'images/posterholder.png')) {
+                        if (movie.poster_path) {
+                            this.model.set('cover', 'http://image.tmdb.org/t/p/w500' + movie.poster_path);
+                        }
+                    };
+                    if ((this.model.get('backdrop') == null) || (this.model.get('backdrop') == 'images/posterholder.png')) {
+                        if (movie.backdrop_path) {
+                            this.model.set('backdrop', 'http://image.tmdb.org/t/p/w500' + movie.backdrop_path);
+                        } else {
+                            if (movie.poster_path) {
+                                this.model.set('backdrop', 'http://image.tmdb.org/t/p/w500' + movie.poster_path);
+                            }
+                        }
+                    };
+                };
+            };
+        },
+
+        getTranslatedData: function () {
+            var imdb = this.model.get('imdb_id');
+            var api_key = Settings.tmdb.api_key;
+            var lang = Settings.language;
+            var movie = function () {
+                var tmp = null;
+                $.ajax({
+                    url: 'http://api.themoviedb.org/3/movie/'+ imdb +'?api_key='+ api_key +'&language='+ lang,
+                    type: 'get',
+                    dataType: 'json',
+                    async: false,
+                    global: false,
+                    success: function (data) {
+                        tmp = data;
+                    }
+                });
+                return tmp;
+            }();
+            if (movie) {
+                if (movie.overview) {
+                    this.model.set('synopsis', movie.overview);
+                } 
+            };
         },
 
         handleAnime: function () {
@@ -226,8 +530,36 @@
             App.vent.trigger('stream:start', torrentStart);
          },
 
-        playTrailer: function () {
+        toggleDropdown: function (e) {
+            $('.tooltip').tooltip('hide');
+            var ytsid = this.model.get('imdb_id');
+            var openid = ytsid.slice(2, 100);
+            if ($('.sub-dropdown-arrow').is('.down')) {
+                this.closeDropdown(e);
+                return false;
+            } else {
+                $('.sub-dropdown-arrow').addClass('down');
+                $('.sub-dropdown').attr('data-original-title', i18n.__("Open OpenSubtitles"));
+                nw.Shell.openExternal('http://www.yifysubtitles.com/movie-imdb/' + ytsid);
+            };
+            var self = this;
+        },
 
+        closeDropdown: function (e) {
+            $('.tooltip').tooltip('hide');
+            var ytsid = this.model.get('imdb_id');
+            var openid = ytsid.slice(2, 100);
+            e.preventDefault();
+            $('.sub-dropdown-arrow').removeClass('down');
+            $('.sub-dropdown').attr('data-original-title', i18n.__("Open YIFYSubtitles"));
+            if (flagt !== 'url("images/flags/snone.png")') {
+		nw.Shell.openExternal('http://www.opensubtitles.org/en/search/sublanguageid-' + opensubt + '/imdbid-' + openid);
+            } else {
+                nw.Shell.openExternal('http://www.opensubtitles.org/en/search/imdbid-' + openid);
+            };
+        },
+
+        playTrailer: function () {
             var trailer = new Backbone.Model({
                 src: this.model.get('trailer'),
                 type: 'video/youtube',
@@ -341,7 +673,8 @@
         },
 
         getTorrentHealth: function (e) {
-            var torrent = this.model.get('torrents')[this.model.get('quality')];
+            var torrent = this.model.get('torrents')[this.model.get('quality')],
+                magnetLink;
 
             cancelTorrentHealth();
 
@@ -352,7 +685,12 @@
                 cancelled = true;
             };
             if (torrent) {
-            torrentHealth(torrent.url, {
+            if (torrent.magnet) {
+                magnetLink = torrent.magnet;
+            } else {
+                magnetLink = torrent.url;
+            }
+            torrentHealth(magnetLink, {
                     timeout: 2000,
                     blacklist: Settings.trackers.blacklisted,
                     trackers: Settings.trackers.forced

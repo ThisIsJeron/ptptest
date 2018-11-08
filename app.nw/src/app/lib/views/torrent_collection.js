@@ -2,23 +2,30 @@
     'use strict';
 
     var clipboard = nw.Clipboard.get(),
-        collection = path.join(data_path + '/TorrentCollection/');
+        collection = path.join(data_path + '/TorrentCollection/'),
+        hidetooltps,
+        totresults = -1;
 
     var TorrentCollection = Marionette.View.extend({
         template: '#torrent-collection-tpl',
         className: 'torrent-collection',
 
         events: {
-            'mousedown .file-item': 'openFileSelector',
-            'mousedown .result-item': 'onlineOpen',
+            'click .file-item': 'openFileSelector',
+            'click .result-item': 'onlineOpen',
             'mousedown .item-delete': 'deleteItem',
             'mousedown .item-rename': 'renameItem',
-            'mousedown .magnet-icon': 'openMagnet',
+            'click .magnet-icon': 'openMagnet',
             'click .collection-delete': 'clearCollection',
             'click .collection-open': 'openCollection',
             'click .collection-import': 'importItem',
             'click .notorrents-frame': 'importItem',
             'click .online-search': 'onlineSearch',
+            'click .online-search2': 'importItem',
+            'click .online-search3': 'onlineSearch3',
+            'click .engine-icon1': 'toggleEngine1',
+            'click .engine-icon2': 'toggleEngine2',
+            'click .engine-icon3': 'toggleEngine3',
             'submit #online-form': 'onlineSearch',
             'click .online-back': 'onlineClose',
             'contextmenu #online-input': 'rightclick_search'
@@ -30,6 +37,7 @@
                 console.debug('TorrentCollection: data directory created');
             }
             this.files = fs.readdirSync(collection);
+            this.searchEngine = 'rarbg';
         },
 
         onAttach: function () {
@@ -37,10 +45,41 @@
                 $('#filterbar-torrent-collection').click();
             });
 
+            $('#movie-detail').hide();
+            $('#nav-filters').hide();
+
             this.render();
         },
 
         onRender: function () {
+            clearTimeout(hidetooltps);
+            if (Settings.useleetx === true) {
+                $('.engine-icon1').addClass('active');
+                $('.engine-icon1').tooltip('hide');
+                $('.engine-icon1').attr('title', 'Disable 1337x').tooltip('fixTitle');
+            } else {
+                $('.engine-icon1').removeClass('active');
+                $('.engine-icon1').tooltip('hide');
+                $('.engine-icon1').attr('title', 'Enable 1337x').tooltip('fixTitle');
+            }
+            if (Settings.usetpb === true) {
+                $('.engine-icon2').addClass('active');
+                $('.engine-icon2').tooltip('hide');
+                $('.engine-icon2').attr('title', 'Disable ThePirateBay').tooltip('fixTitle');
+            } else {
+                $('.engine-icon2').removeClass('active');
+                $('.engine-icon2').tooltip('hide');
+                $('.engine-icon2').attr('title', 'Enable ThePirateBay').tooltip('fixTitle');
+            }
+            if (Settings.userarbg === true) {
+                $('.engine-icon3').addClass('active');
+                $('.engine-icon3').tooltip('hide');
+                $('.engine-icon3').attr('title', 'Disable RARBG').tooltip('fixTitle');
+            } else {
+                $('.engine-icon3').removeClass('active');
+                $('.engine-icon3').tooltip('hide');
+                $('.engine-icon3').attr('title', 'Enable RARBG').tooltip('fixTitle');
+            }
             $('#online-input').focus();
             if (this.files[0]) {
                 $('.notorrents-info').css('display', 'none');
@@ -54,9 +93,75 @@
                     'hide': 100
                 }
             });
+            if (($('.loading .maximize-icon').css('visibility') == 'visible') || ($('.loading .maximize-icong').css('visibility') == 'visible')) {             
+                $('.online-search2').css('cursor', 'not-allowed');
+                $('.online-search2').css('opacity', '0.2');
+                $('.online-search2').prop('disabled', true);
+                $('.online-search2').attr('data-original-title', '');
+                $('.online-search3').css('cursor', 'not-allowed');
+                $('.online-search3').css('opacity', '0.2');
+                $('.online-search3').prop('disabled', true);
+                $('.online-search3').attr('data-original-title', '');
+                $('.file-item').css('cursor', 'not-allowed');
+                $('.file-item').css('opacity', '0.7');
+                $('.file-item').prop('disabled', true);
+            }
+        },
+
+        toggleEngine1: function (e) {
+            if (Settings.useleetx === true) {
+                AdvSettings.set('useleetx', false);
+                $('.engine-icon1').removeClass('active');
+                $('.engine-icon1').tooltip('hide');
+                $('.engine-icon1').attr('title', 'Enable 1337x').tooltip('fixTitle');
+            } else {
+                AdvSettings.set('useleetx', true);
+                $('.engine-icon1').addClass('active');
+                $('.engine-icon1').tooltip('hide');
+                $('.engine-icon1').attr('title', 'Disable 1337x').tooltip('fixTitle');
+            }
+        },
+
+        toggleEngine2: function (e) {
+            if (Settings.usetpb === true) {
+                AdvSettings.set('usetpb', false);
+                $('.engine-icon2').removeClass('active');
+                $('.engine-icon2').tooltip('hide');
+                $('.engine-icon2').attr('title', 'Enable ThePirateBay').tooltip('fixTitle');
+            } else {
+                AdvSettings.set('usetpb', true);
+                $('.engine-icon2').addClass('active');
+                $('.engine-icon2').tooltip('hide');
+                $('.engine-icon2').attr('title', 'Disable ThePirateBay').tooltip('fixTitle');
+            }
+        },
+
+        toggleEngine3: function (e) {
+            if (Settings.userarbg === true) {
+                AdvSettings.set('userarbg', false)
+                $('.engine-icon3').removeClass('active');
+                $('.engine-icon3').tooltip('hide');
+                $('.engine-icon3').attr('title', 'Enable RARBG').tooltip('fixTitle');
+            } else {
+                AdvSettings.set('userarbg', true)
+                $('.engine-icon3').addClass('active');
+                $('.engine-icon3').tooltip('hide');
+                $('.engine-icon3').attr('title', 'Disable RARBG').tooltip('fixTitle');
+            }
+        },
+
+        onlineSearch3: function (e) {
+            var data3 = clipboard.get('text');
+            handleTorrent(data3, 'text');
         },
 
         onlineSearch: function (e, retry) {
+            clearTimeout(hidetooltps);
+            totresults = -1;
+            $('.tooltip').tooltip('hide');
+            $('.engine-icon1').attr('title', '0').tooltip('fixTitle');
+            $('.engine-icon2').attr('title', '0').tooltip('fixTitle');
+            $('.engine-icon3').attr('title', '0').tooltip('fixTitle');
             if (e) {
                 e.preventDefault();
             }
@@ -64,9 +169,13 @@
             var input = $('#online-input').val();
             var category = $('.online-categories > select').val();
             AdvSettings.set('OnlineSearchCategory', category);
-            if (category === 'TV Series') {
-                category = 'TV';
-            }
+            if (category === 'Series') {
+                category = 'tv';
+            } else if (category === 'Movies') {
+				category = 'movies';
+			} else if (category === 'Anime') {
+				category = 'anime';
+			}
             var current = $('.onlinesearch-info > ul.file-list').html();
 
             if (input === '' && current === '') {
@@ -82,78 +191,42 @@
 
             var index = 0;
 
-            var cpasbien = function () {
-                return new Promise(function (resolve) {
-                    var results = [];
-                    setTimeout(function () {
-                        resolve(results);
-                    }, 5000);
-                    var cpb = new torrentCollection.Cpb();
-
-                    var scope = category.toLocaleLowerCase();
-                    if (scope === 'tv' || scope === 'anime') {
-                        scope = 'tvshow';
-                    }
-
-                    cpb.Search(input.toLocaleLowerCase(), {
-                        scope: scope,
-                        language: 'FR'
-                    }).then(function (data) {
-                        console.debug('cpasbien search: %s results', data.items.length);
-                        data.items.forEach(function (item) {
-                            var itemModel = {
-                                title: item.title,
-                                magnet: item.torrent,
-                                seeds: item.seeds,
-                                peers: item.leechs,
-                                size: item.size,
-                                index: index
-                            };
-
-                            if (item.title.match(/trailer/i) !== null && input.match(/trailer/i) === null) {
-                                return;
-                            }
-                            results.push(itemModel);
-                            index++;
-                        });
-                        resolve(results);
-                    }).catch(function (err) {
-                        console.error('cpasbien search:', err);
-                        resolve(results);
-                    });
-                });
-            };
-
             var leetx = function () {
                 return new Promise(function (resolve) {
                     var results = [];
                     setTimeout(function () {
                         resolve(results);
-                    }, 5000);
+                    }, 6000);
                     var leet = torrentCollection.leet;
                     leet.search({query:input.toLocaleLowerCase()}).then(function (data) {
-                        console.debug('1337x search: %s results', data.length);
-                        var indx = 1, totl = data.length;
-                        data.forEach(function (item) {
-                            leet.info(item.href).then(function (ldata) {
-                                var itemModel = {
-                                    title: ldata.title,
-                                    magnet: ldata.download.magnet,
-                                    seeds: ldata.seeders,
-                                    peers: ldata.leechers,
-                                    size: ldata.size,
-                                    index: index
-                                };
-                                indx++;
-                                if (item.title.match(/trailer/i) !== null && input.match(/trailer/i) === null) {
-                                    return;
-                                }
-                                results.push(itemModel);
-                                index++;
-                            }).catch(function (err) {
-                                throw 'nope';
+                        if (totresults == -1) {
+                            console.debug('1337x search: %s results', data.length);
+                            $('.engine-icon1').attr('title', data.length).tooltip('fixTitle').tooltip('show');
+                            $('.tooltip').css('top', 87 + 'px');
+                            var indx = 1, totl = data.length;
+                            data.forEach(function (item) {
+                                leet.info(item.href).then(function (ldata) {
+                                    var itemModel = {
+                                        title: ldata.title,
+                                        magnet: ldata.download.magnet,
+                                        seeds: ldata.seeders,
+                                        peers: ldata.leechers,
+                                        size: ldata.size,
+                                        index: index
+                                    };
+                                    indx++;
+                                    if (item.title.match(/trailer/i) !== null && input.match(/trailer/i) === null) {
+                                        return;
+                                    }
+                                    results.push(itemModel);
+                                    index++;
+                                }).catch(function (err) {
+                                    throw 'nope';
+                                });
                             });
-                        });
+                        } else {
+                            return;
+                        };
                     }).catch(function (err) {
                         console.error('1337x search:', err);
                         resolve(results);
@@ -166,7 +239,7 @@
                     var results = [];
                     setTimeout(function () {
                         resolve(results);
-                    }, 5000);
+                    }, 6000);
                     var tpb = torrentCollection.tpb;
                     tpb.search(input.toLocaleLowerCase(), {
                         category: 0,
@@ -174,28 +247,34 @@
                         orderBy: 'seeds',
                         sortBy: 'desc'
                     }).then(function (data) {
-                        console.debug('TPB search: %s results', data.length);
-                        data.forEach(function (item) {
-                            if (!item.category) {
-                                return;
-                            }
+                        if (totresults == -1) {
+                            console.debug('TPB search: %s results', data.length);
+                            $('.engine-icon2').attr('title', data.length).tooltip('fixTitle').tooltip('show');
+                            $('.tooltip').css('top', 87 + 'px');
+                            data.forEach(function (item) {
+                                if (!item.category) {
+                                    return;
+                                }
 
-                            var itemModel = {
-                                title: item.name,
-                                magnet: item.magnetLink,
-                                seeds: item.seeders,
-                                peers: item.leechers,
-                                size: item.size,
-                                index: index
-                            };
+                                var itemModel = {
+                                    title: item.name,
+                                    magnet: item.magnetLink,
+                                    seeds: item.seeders,
+                                    peers: item.leechers,
+                                    size: item.size,
+                                    index: index
+                                };
 
-                            if (item.name.match(/trailer/i) !== null && item.name.match(/trailer/i) === null) {
-                                return;
-                            }
-                            results.push(itemModel);
-                            index++;
-                        });
-                        resolve(results);
+                                if (item.name.match(/trailer/i) !== null && item.name.match(/trailer/i) === null) {
+                                    return;
+                                }
+                                results.push(itemModel);
+                                index++;
+                            });
+                            resolve(results);
+                        } else {
+                            return;
+                        };
                     }).catch(function (err) {
                         console.error('tpb search:', err);
                         resolve(results);
@@ -208,7 +287,7 @@
                     var results1 = [];
                     setTimeout(function () {
                         resolve(results1);
-                    }, 5000);
+                    }, 6000);
                     var rbg = torrentCollection.rbg;
                     rbg.search({
                         query: input.toLocaleLowerCase(),
@@ -216,24 +295,30 @@
                         sort: 'seeders',
                         verified: false
                     }).then(function (results) {
-                        console.debug('rarbg search: %s results', results.length);
-                        results.forEach(function (item) {
-                            var itemModel = {
-                                title: item.title,
-                                magnet: item.download,
-                                seeds: item.seeders,
-                                peers: item.leechers,
-                                size: Common.fileSize(parseInt(item.size)),
-                                index: index
-                            };
+                        if (totresults == -1) {
+                            console.debug('rarbg search: %s results', results.length);
+                            $('.engine-icon3').attr('title', results.length).tooltip('fixTitle').tooltip('show');
+                            $('.tooltip').css('top', 87 + 'px');
+                            results.forEach(function (item) {
+                                var itemModel = {
+                                    title: item.title,
+                                    magnet: item.download,
+                                    seeds: item.seeders,
+                                    peers: item.leechers,
+                                    size: Common.fileSize(parseInt(item.size)),
+                                    index: index
+                                };
 
-                            if (item.title.match(/trailer/i) !== null && input.match(/trailer/i) === null) {
-                                return;
-                            }
-                            results1.push(itemModel);
-                            index++;
-                        });
-                        resolve(results1);
+                                if (item.title.match(/trailer/i) !== null && input.match(/trailer/i) === null) {
+                                    return;
+                                }
+                                results1.push(itemModel);
+                                index++;
+                            });
+                            resolve(results1);
+                        } else {
+                            return;
+                        };
                     }).catch(function (err) {
                         console.error('rarbg search:', err);
                         if (!retry) {
@@ -264,25 +349,32 @@
 
             var sortBySeeds = function (items) {
                 return items.sort(function (a, b) {
-                    if (a.seeds > b.seeds) {
-                        return -1;
-                    }
-                    if (a.seeds < b.seeds) {
-                        return 1;
-                    }
-                    return 0;
+                    return b.seeds - a.seeds;
                 });
             };
 
             $('.notorrents-info,.torrents-info').hide();
-            return Promise.all([
-                rarbg(),
-                leetx(),
-                piratebay(),
-                cpasbien()
-            ]).then(function (results) {
+
+            const storageProcesses = [];
+            if (Settings.userarbg === true) {
+                storageProcesses.push(rarbg());
+            }
+            if (Settings.usetpb === true) {
+                storageProcesses.push(piratebay());
+            }
+            if (Settings.useleetx === true) {
+                storageProcesses.push(leetx());
+            }
+
+            return Promise.all(storageProcesses).then(function (results) {
                 var items = sortBySeeds(removeDupes(results));
                 console.log('search providers: %d results', items.length);
+                totresults = items.length;
+                $('.online-search').attr('title', items.length).tooltip('fixTitle').tooltip('show');
+                $('.tooltip').css('top', 86 + 'px');
+                hidetooltps = setTimeout(function() {
+                $('.tooltip').tooltip('hide');
+                }, 4000);
 
                 return Promise.all(items.map(function (item) {
                     that.onlineAddItem(item);
@@ -303,6 +395,7 @@
                     });
                 });
             });
+      
         },
 
         onlineAddItem: function (item) {
@@ -327,9 +420,15 @@
                     $('.result-item[data-index=' + item.index + '] i').attr('data-original-title', i18n.__('Ratio:') + ' ' + ratio.toFixed(2) + '<br>' + i18n.__('Seeds:') + ' ' + res.seeds + ' - ' + i18n.__('Peers:') + ' ' + res.peers);
                 });
             }
+            if (($('.loading .maximize-icon').css('visibility') == 'visible') || ($('.loading .maximize-icong').css('visibility') == 'visible')) {        
+                $('.result-item').css('cursor', 'not-allowed');
+                $('.result-item').css('opacity', '0.7');
+                $('.result-item').prop('disabled', true);
+            }
         },
 
         onlineOpen: function (e) {
+            $('.tooltip').tooltip('hide');
             var file = e.currentTarget.dataset.file;
             Settings.droppedMagnet = file;
             window.handleTorrent(file);
@@ -487,7 +586,7 @@
 
         clearCollection: function () {
             var btn = confirm(i18n.__('Are you sure you want to clear the entire Torrent Collection ?'));
-            if (btn === true) {
+                if (btn === true) {
                 deleteFolder(collection);
                 console.debug('Torrent Collection: delete all', collection);
                 App.vent.trigger('torrentCollection:show');
@@ -520,6 +619,9 @@
 
         onBeforeDestroy: function () {
             Mousetrap.unbind(['esc', 'backspace']);
+            $('#movie-detail').show();
+            $('#nav-filters').show();
+            $('.tooltip').tooltip('hide');
         },
 
         closeTorrentCollection: function () {

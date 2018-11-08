@@ -195,6 +195,14 @@
 
             App.Device.Collection.setDevice(Settings.chosenPlayer);
             App.Device.ChooserView('#player-chooser').render();
+            if (($('.loading .maximize-icon').css('visibility') == 'visible') || ($('.loading .maximize-icong').css('visibility') == 'visible')) {
+               $('.sdow-watchnow').css('background-color', '#707070');
+               $('.sdow-watchnow').css('cursor', 'not-allowed');
+               $('.sdow-watchnow').prop('disabled', true);
+               $('.sdow-watchnow').css('visibility', 'hidden');
+               $('#watch-now').prop('disabled', true);
+               $('#watch-now2').prop('disabled', true);
+            }
         },
 
         selectNextEpisode: function () {

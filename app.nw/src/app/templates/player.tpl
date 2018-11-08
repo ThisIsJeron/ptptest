@@ -11,6 +11,12 @@
             <i class="fa fa-eye eye-info-player"></i>
             <div class="details-info-player">
                 <div class="arrow-up"></div>
+                <% if((quality) && (Settings.activateToolf === true)) { %>
+                <div style="text-align:center; word-wrap:break-word; white-space:normal;"><span class="speed-info-player"><%= filename %></span></div><br>
+                <% } %>
+                <% if((quality) && (Settings.activateTools === true)) { %>
+                <div style="text-align:center; word-wrap:break-word; white-space:normal;"><span class="speed-info-player"><%= src.replace('127.0.0.1', Settings.ipAddress) %></span></div><br><br>
+                <% } %>
                 <span class="speed-info-player"><%= i18n.__("Download") %>:&nbsp;</span><span class="download_speed_player value"><%= Common.fileSize(0) %>/s</span><br>
                 <span class="speed-info-player"><%= i18n.__("Upload") %>:&nbsp;</span><span class="upload_speed_player value"><%= Common.fileSize(0) %>/s</span><br>
                 <span class="speed-info-player"><%= i18n.__("Active Peers") %>:&nbsp;</span><span class="active_peers_player value">0</span><br>

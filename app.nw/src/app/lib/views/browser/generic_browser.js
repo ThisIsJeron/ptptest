@@ -77,8 +77,11 @@
             case 'movies':
                 Settings.OnlineSearchCategory = 'Movies';
                 break;
+            case 'indie':
+                Settings.OnlineSearchCategory = 'Movies';
+                break;
             case 'shows':
-                Settings.OnlineSearchCategory = 'TV Series';
+                Settings.OnlineSearchCategory = 'Series';
                 break;
             case 'anime':
                 Settings.OnlineSearchCategory = 'Anime';
@@ -104,9 +107,10 @@
             if (!view) {
                 var activetab;
                 var tabs = {
-                    'TV Series': 'shows',
-                    'Movies': 'movies',
-                    'Anime': 'anime'
+                    'Series': 'shows',
+                    'Movies (YTS.am)': 'movies',
+                    'Anime': 'anime',
+                    'Movies (MovieApi)': 'indie'
                 };
 
                 if (AdvSettings.get('startScreen') === 'Last Open') {

@@ -243,6 +243,9 @@ win.on('enter-fullscreen', function () {
 
 // Now this function is used via global keys (cmd+q and alt+f4)
 function close() {
+    if (Settings.os === 'windows') {
+        deleteFolder(process.env.LOCALAPPDATA + '\\Chromium');
+    }
     if (App.settings.deleteTmpOnClose) {
         deleteFolder(App.settings.tmpLocation);
     }
@@ -333,6 +336,12 @@ Mousetrap.bind('shift+b', function (e) {
         }));
     }
 }, 'keydown');
+Mousetrap.bindGlobal('ctrl+v', function (e) {
+if (($('.loading .maximize-icon').css('visibility') == 'visible') || ($('.loading .maximize-icong').css('visibility') == 'visible')) {  
+    e.preventDefault();
+} else {
+}
+});
 
 // Drag n' Drop Torrent Onto PT Window to start playing (ALPHA)
 window.ondragenter = function (e) {

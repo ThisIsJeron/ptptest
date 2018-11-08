@@ -24,7 +24,6 @@
             'Mystery',
             'Romance',
             'Sci-Fi',
-            'Short',
             'Sport',
             'Thriller',
             'War',
@@ -32,18 +31,16 @@
         ],
 
         sorters: [
-            'trending',
-            'popularity',
             'last added',
+            'popularity',
             'year',
             'title',
             'rating'
         ],
 
         sorters_tv: [
-            'trending',
-            'popularity',
             'updated',
+            'popularity',
             'year',
             'name',
             'rating'
@@ -171,17 +168,17 @@
             'Mystery',
             'Romance',
             'Sci-Fi',
-            'Short',
             'Sport',
             'Thriller',
             'War',
             'Western'
         ],
         sorters_indie: [
+            'last added',
+            'trending',
             'popularity',
-            'updated',
             'year',
-            'alphabet',
+            'title',
             'rating'
         ],
         types_indie: [],
@@ -208,7 +205,7 @@
                     type: t
                 };
             }), function (p) {
-                if ((p.name === 'Anime' && Settings.animeTabDisable) || (p.name === 'Indie' && Settings.indieTabDisable)) {
+                if ((p.name === 'Movies' && Settings.moviesTabDisable === true) || (p.name === 'Series' && Settings.seriesTabDisable === true) || (p.name === 'Anime' && Settings.animeTabDisable === true) || (p.name === 'Movies ' && Settings.indieTabDisable === true)) {
                     return false;
                 }
 
